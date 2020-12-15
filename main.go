@@ -31,7 +31,7 @@ func main() {
 	var resText string
 	var unavailable bool
 	var amzn []string
-	amzn = append(amzn, "https://www.amazon.de/-/en/dp/B08H93ZRK9/", "https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/", "https://www.amazon.de/-/en/dp/B08H99BPJN/")
+	amzn = append(amzn, "https://www.amazon.de/-/en/dp/B08H93ZRK9/", "https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/")
 
 	for i := 0; i < len(amzn); i++ {
 		log.Println("Checking: ", amzn[i])
