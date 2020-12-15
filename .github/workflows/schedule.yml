@@ -1,10 +1,10 @@
 name: check-availability
 
 on:
-  push:
+  # push:
   schedule:
     # * is a special character in YAML so you have to quote this string
-    - cron:  '25 7-23 * * *'
+    - cron:  '59 7-23 * * *'
 
 jobs:
   check-availability:
