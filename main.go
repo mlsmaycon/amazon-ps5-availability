@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/chromedp/cdproto/emulation"
 	"github.com/chromedp/chromedp"
 )
 
@@ -21,6 +22,7 @@ func getResponse(url string) string {
 	var err error
 
 	err = chromedp.Run(ctx,
+		emulation.SetUserAgentOverride("Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"),
 		chromedp.Navigate(url),
 		chromedp.Text(`#availability`, &res, chromedp.NodeVisible, chromedp.ByID),
 	)
@@ -34,7 +36,7 @@ func main() {
 	var resText string
 	var unavailable bool
 	var amzn []string
-	amzn = append(amzn, "https://www.amazon.de/-/en/dp/B08H93ZRK9/", "https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/")
+	amzn = append(amzn, "https://www.amazon.co.uk/PlayStation-9395003-5-Console/dp/B08H95Y452/", "https://www.amazon.de/-/en/dp/B08H93ZRK9/")
 
 	for i := 0; i < len(amzn); i++ {
 		log.Println("Checking: ", amzn[i])
