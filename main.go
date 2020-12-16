@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/chromedp/chromedp"
 )
@@ -12,6 +13,8 @@ import (
 func getResponse(url string) string {
 	// create context
 	ctx, cancel := chromedp.NewContext(context.Background(), chromedp.WithLogf(log.Printf))
+	defer cancel()
+	ctx, cancel = context.WithTimeout(ctx, 45*time.Second)
 	defer cancel()
 	// run task list
 	var res string
