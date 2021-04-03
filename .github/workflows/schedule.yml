@@ -18,7 +18,7 @@ jobs:
 #      - run: go get github.com/chromedp/chromedp
 #      - run: go get github.com/chromedp/cdproto/emulation
       - name: Go Modules
-        uses: cedrickring/golang-action@1.6.0
+        run: go mod download
         env:
           GO111MODULE: "on"
       - name: run the script
