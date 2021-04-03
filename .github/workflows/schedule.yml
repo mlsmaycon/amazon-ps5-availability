@@ -15,11 +15,13 @@ jobs:
       - uses: actions/setup-go@v2
         with:
           go-version: '^1.15.5' # The Go version to download (if necessary) and use.
-#      - run: go get github.com/chromedp/chromedp
-#      - run: go get github.com/chromedp/cdproto/emulation
       - name: Go Modules
         run: go mod download
         env:
           GO111MODULE: "on"
       - name: run the script
         run: go run main.go
+        env:
+          TELEGRAM_ENABLED: "true"
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}

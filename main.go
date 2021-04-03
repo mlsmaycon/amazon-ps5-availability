@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	tb "gopkg.in/tucnak/telebot.v2"
 	"log"
 	"os"
 	"strings"
@@ -32,11 +34,32 @@ func getResponse(url string) string {
 	return res
 }
 
+func sendMSG(url string) error {
+	token := os.Getenv("TELEGRAM_TOKEN")
+	chatID := os.Getenv("TELEGRAM_CHAT_ID")
+	bot, err := tb.NewBot(tb.Settings{Token: token})
+	if err != nil {
+		return err
+	}
+	chat, err := bot.ChatByID(chatID)
+	if err != nil {
+		return err
+	}
+	_, err = bot.Send(chat, fmt.Sprintf("The URL %v has PS5 in stock.", url))
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func main() {
 	var resText string
 	var unavailable bool
 	var amzn []string
-	amzn = append(amzn, "https://www.amazon.de/-/en/dp/B08H98GVK8/", "https://www.amazon.de/-/en/dp/B08H93ZRK9/")
+	amzn = append(amzn,
+		"https://www.amazon.de/-/en/dp/B08H98GVK8/",
+		"https://www.amazon.de/-/en/dp/B08H93ZRK9/",
+	)
 
 	for i := 0; i < len(amzn); i++ {
 		log.Println("Checking: ", amzn[i])
@@ -44,7 +67,14 @@ func main() {
 		log.Println(strings.TrimSpace(resText))
 		unavailable = strings.Contains(resText, "unavailable")
 		if unavailable == false {
+			if os.Getenv("TELEGRAM_ENABLED") == "true" {
+				err := sendMSG(amzn[i])
+				if err != nil {
+					log.Println("Sending Telegram message failed: ", err)
+				}
+			}
 			os.Exit(100 + i) // fail is ok, github will notify us
 		}
 	}
+
 }
